@@ -212,7 +212,7 @@ def get_crt(user, password, tenant, api_version, account_key, csr, CA=DEFAULT_CA
         if not serving_on_port_80:
             # Add to port to virtualservice
             log.info("Adding port 80 to VS")
-            service_on_port_80_data = {          
+            service_on_port_80_data = {
                 "enable_http2": False,
                 "enable_ssl": False,
                 "port": 80,
@@ -254,7 +254,7 @@ def get_crt(user, password, tenant, api_version, account_key, csr, CA=DEFAULT_CA
 
         if exception_occured:
             log.error(exception_occured)
-            raise exception_occured
+            raise exception_occured[1]
 
         log.info("{0} verified!".format(domain))
 
@@ -304,9 +304,9 @@ def certificate_request(csr, common_name, kwargs):
         os.remove(csr_temp_file.name)
         os.remove(account_key_temp_file.name)
 
-    if not signed_crt:
+    if not exception_occured:
         log.error(exception_occured)
-        raise exception_occured
+        raise exception_occured[1]
 
     log.info(signed_crt)
     return signed_crt
